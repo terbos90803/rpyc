@@ -95,10 +95,10 @@ class _Async(object):
     def __call__(self, *args, **kwargs):
         return asyncreq(self.proxy, HANDLE_CALL, args, tuple(kwargs.items()))
     def __repr__(self):
-        return "async(%r)" % (self.proxy,)
+        return "async_(%r)" % (self.proxy,)
 
 _async_proxies_cache = WeakValueDict()
-def async(proxy):
+def async_(proxy):
     """
     Returns an asynchronous "version" of the given proxy. Invoking the returned
     proxy will not block; instead it will return an 
@@ -137,7 +137,7 @@ def async(proxy):
     _async_proxies_cache[id(caller)] = _async_proxies_cache[pid] = caller
     return caller
 
-async.__doc__ = _Async.__doc__
+async_.__doc__ = _Async.__doc__
 
 class timed(object):
     """Creates a timed asynchronous proxy. Invoking the timed proxy will
@@ -158,7 +158,7 @@ class timed(object):
 
     __slots__ = ("__weakref__", "proxy", "timeout")
     def __init__(self, proxy, timeout):
-        self.proxy = async(proxy)
+        self.proxy = async_(proxy)
         self.timeout = timeout
     def __call__(self, *args, **kwargs):
         res = self.proxy(*args, **kwargs)
